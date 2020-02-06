@@ -1,7 +1,8 @@
 (function ($) {
-    "use strict";
+    // We're declaring global variables, so we cannot use strict mode
+    // "use strict";
 
-    (function chainedfk() {
+    chainedfk = function() {
         return {
             fireEvent: function (element, event) {
                 var evt, rtn;
@@ -15,7 +16,6 @@
                     evt.initEvent(event, true, true); // event type,bubbling,cancelable
                     rtn = !element.dispatchEvent(evt);
                 }
-
                 return rtn;
             },
             dismissRelatedLookupPopup: function (win, chosenId) {
@@ -86,14 +86,15 @@
                     val = $(chainfield).val();
                     fill_field(val, init_value, id, url, empty_label, auto_choose);
                 }
-                $(chainfield).change(function () {
+                
+                $(chainfield).on('change',function () {
                     // Handle the case of inlines, where the ID will depend on which list item we are dealing with
                     var prefix, start_value, this_val, localID = id;
                     if (localID.indexOf("__prefix__") > -1) {
                         prefix = $(this).attr("id").match(/\d+/)[0];
                         localID = localID.replace("__prefix__", prefix);
                     }
-
+                    console.log('here');
                     start_value = $(localID).val();
                     this_val = $(this).val();
                     fill_field(this_val, start_value, localID, url, empty_label, auto_choose);
@@ -109,5 +110,5 @@
                 }
             }
         };
-    }());
+    }();
 }(jQuery || django.jQuery));
